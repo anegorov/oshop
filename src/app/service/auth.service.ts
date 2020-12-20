@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Observable } from 'rxjs';
 
@@ -7,10 +8,10 @@ import { Observable } from 'rxjs';
 })
 export class AuthService {
 
-  user: Observable<firebase.User>;
+  user$: Observable<firebase.User>;
 
-  constructor(private firebaseAuth: AngularFireAuth) {
-    this.user = firebaseAuth.authState;
+  constructor(private firebaseAuth: AngularFireAuth, private route: ActivatedRoute) {
+    this.user$ = firebaseAuth.authState;
   }
 
   signup(email: string, password: string) {
@@ -25,6 +26,9 @@ export class AuthService {
   }
 
   login(email: string, password: string) {
+    let returnUrl = this.route.snapshot.queryParamMap.get('returnUrl') || '/';
+    localStorage.setItem('returnUrl', returnUrl);
+    
     this.firebaseAuth
       .signInWithEmailAndPassword(email, password)
       .then(value => {
@@ -40,6 +44,6 @@ export class AuthService {
   }
 
   status() : Observable<firebase.User> {
-    return this.user;
+    return this.user$;
   }
 }

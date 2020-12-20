@@ -23,6 +23,7 @@ import { AdminOrdersComponent } from './admin/admin-orders/admin-orders.componen
 import { LoginComponent } from './login/login.component';
 
 import { AuthService } from './service/auth.service';
+import { AuthGuardService } from './service/auth-guard.service';
 
 @NgModule({
   declarations: [
@@ -47,18 +48,21 @@ import { AuthService } from './service/auth.service';
       { path: '', component: HomeComponent },
       { path: 'products', component: ProductsComponent },
       { path: 'shopping-cart', component: ShoppingCartComponent },
-      { path: 'my/orders', component: MyOrdersComponent },
-      { path: 'check-out', component: CheckOutComponent },
-      { path: 'order-success', component: OrderSuccessComponent },
       { path: 'login', component: LoginComponent },
-      { path: 'admin/products', component: AdminProductsComponent },
-      { path: 'admin/orders', component: AdminOrdersComponent }
+      { path: 'my/orders', component: MyOrdersComponent , canActivate:[AuthGuardService]},
+      { path: 'check-out', component: CheckOutComponent, canActivate:[AuthGuardService] },
+      { path: 'order-success', component: OrderSuccessComponent, canActivate:[AuthGuardService] },      
+      { path: 'admin/products', component: AdminProductsComponent, canActivate:[AuthGuardService] },
+      { path: 'admin/orders', component: AdminOrdersComponent, canActivate:[AuthGuardService] }
     ]),
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireDatabaseModule,
     AngularFireAuthModule
   ],
-  providers: [AuthService],
+  providers: [
+    AuthService,
+    AuthGuardService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
