@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CategoryService } from 'src/app/service/category.service';
 import { ProductService } from 'src/app/service/product.service';
 
@@ -9,14 +10,28 @@ import { ProductService } from 'src/app/service/product.service';
 })
 export class ProductFormComponent implements OnInit {
   categories$;
+  product = {};
+  subscription$;
+  id;
 
-  constructor(categoryService: CategoryService, private productService: ProductService) { 
+  constructor(
+    private categoryService: CategoryService, 
+    private productService: ProductService,
+    private router: Router,
+    private route: ActivatedRoute) { 
     this.categories$ = categoryService.getCategories();
+    this.id = this.route.snapshot.paramMap.get('id');
+    if (this.id) this.productService.get(this.id)
+                                  .subscribe(p => {
+                                    this.product = p;
+                                  });
   }
 
   save(product){
-    console.log(product);
-    this.productService.create(product);
+    if(this.id) this.productService.update(this.id, product);
+    else this.productService.create(product);
+    
+    this.router.navigate(['/admin/products']);
   }
 
   ngOnInit(): void {
