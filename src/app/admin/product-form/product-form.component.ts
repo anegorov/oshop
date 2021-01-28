@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { CategoryService } from 'src/app/service/category.service';
 import { ProductService } from 'src/app/service/product.service';
 
@@ -8,10 +9,10 @@ import { ProductService } from 'src/app/service/product.service';
   templateUrl: './product-form.component.html',
   styleUrls: ['./product-form.component.css']
 })
-export class ProductFormComponent implements OnInit {
+export class ProductFormComponent implements OnInit, OnDestroy {
   categories$;
-  product = {};
-  subscription$;
+  product;
+  subscription: Subscription;
   id;
 
   constructor(
@@ -21,7 +22,7 @@ export class ProductFormComponent implements OnInit {
     private route: ActivatedRoute) { 
     this.categories$ = categoryService.getCategories();
     this.id = this.route.snapshot.paramMap.get('id');
-    if (this.id) this.productService.get(this.id)
+    if (this.id) this.subscription = this.productService.get(this.id)
                                   .subscribe(p => {
                                     this.product = p;
                                   });
@@ -34,7 +35,17 @@ export class ProductFormComponent implements OnInit {
     this.router.navigate(['/admin/products']);
   }
 
+  delete() {
+    if(!confirm('Are you sure you want to delete this product?')) return;
+    
+    this.productService.delete(this.id);
+    this.router.navigate(['/admin/products']);    
+  }
+
   ngOnInit(): void {
   }
 
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
 }
