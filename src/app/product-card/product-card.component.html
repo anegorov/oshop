@@ -1,0 +1,21 @@
+<!-- <p>{{p | json}}</p> -->
+<div *ngIf="p.d" class="card">
+    <img *ngIf="p.d.imageUrl" [src]="p.d.imageUrl" class="card-img-top" alt="{{ p.d.title }}">
+    <div class="card-body">
+      <h5 class="card-title">{{ p.d.title }}</h5>
+      <p class="card-text">{{ p.d.price | currency:'USD' }}</p>      
+    </div>
+    <div class="card-footer">
+        <a *ngIf="showActions" href="#" class="btn btn-primary btn-block">Add to Cart</a>
+    </div>
+</div>
+<!-- <div *ngIf="p" class="card">
+    <img *ngIf="p.imageUrl" [src]="p.imageUrl" class="card-img-top" alt="{{ p.title }}">
+    <div class="card-body">
+      <h5 class="card-title">{{ p.title }}</h5>
+      <p class="card-text">{{ p.price | currency:'USD' }}</p>      
+    </div>
+    <div class="card-footer">
+        <a *ngIf="showActions" href="#" class="btn btn-primary btn-block">Add to Cart</a>
+    </div>
+</div> -->
