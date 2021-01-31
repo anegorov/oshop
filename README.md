@@ -30,4 +30,7 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 Used ng2-validation library
 https://github.com/yuyang041060120/ng2-validation
 
+## Data table (ordering, pagination, etc)
+angular-4-data-table
+https://www.npmjs.com/package/angular-4-data-table
  

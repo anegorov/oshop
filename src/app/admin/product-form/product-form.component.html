@@ -23,8 +23,8 @@
                 <label for="category">Category</label>
                 <select #category="ngModel" [(ngModel)]="product.category" name="category" id="category" class="form-control" required>
                     <option value=""></option>
-                    <option *ngFor="let c of categories$ | async" [ngValue]="c.name">
-                        {{ c.name }}
+                    <option *ngFor="let c of categories$ | async" [ngValue]="c.d.name">
+                        {{ c.d.name }}
                     </option>
                 </select>
                 <div class="alert alert-danger" *ngIf="category.touched && category.invalid">
@@ -51,7 +51,7 @@
             <img [src]="imageUrl.value" class="card-img-top" *ngIf="product.imageUrl">
             <div class="card-body">
               <h5 class="card-title">{{title.value}}</h5>
-              <p class="card-text">{{price.value | currency:'USD':true}}</p>
+              <p class="card-text">{{price.value | currency:'USD'}}</p>
             </div>
           </div>
     </div>
